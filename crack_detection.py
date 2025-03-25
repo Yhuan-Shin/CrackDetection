@@ -34,34 +34,27 @@ def detect_cracks(image_path):
     img = cv2.imread(image_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # Apply Gaussian Blur to reduce noise
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 
-    # Edge detection
     edges = cv2.Canny(blurred, 50, 150)
 
-    # Morphological operations to connect cracks
     kernel = np.ones((3, 3), np.uint8)
     dilated = cv2.dilate(edges, kernel, iterations=1)
     eroded = cv2.erode(dilated, kernel, iterations=1)
 
-    # Find contours
     contours, _ = cv2.findContours(eroded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    min_length = 80  # Filter out short detections
-    min_aspect_ratio = 4  # Focus on long, thin cracks
-
+    min_length = 80
+    min_aspect_ratio = 4
     for contour in contours:
         x, y, w, h = cv2.boundingRect(contour)
-        aspect_ratio = max(w, h) / (min(w, h) + 1)  # Avoid division by zero
+        aspect_ratio = max(w, h) / (min(w, h) + 1)
         length = max(w, h)
 
-        # Ensure it is long and thin (hairline crack)
         if length > min_length and aspect_ratio > min_aspect_ratio:
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(img, f"Length: {length}px", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
 
-    # Save and display the output
     output_path = os.path.join(r"C:\Users\ICTD\PycharmProjects\PythonProject\processed_images",
                                os.path.basename(image_path))
     cv2.imwrite(output_path, img)
@@ -99,7 +92,6 @@ print(f"Model accuracy: {accuracy * 100:.2f}%")
 
 user_input = input("Choose an option below (1) Test all images or (2) Enter a test image file name: ")
 number = int(user_input)
-
 test_images_folder = r"C:\Users\ICTD\PycharmProjects\PythonProject\test_images"
 if number == 1:
     for filename in os.listdir(test_images_folder):
