@@ -6,9 +6,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
-DIR_DATASET= r"C:\Users\ICTD\PycharmProjects\PythonProject\kaggle_datasets"
-DIR_PROCESSED_IMAGES =r"C:\Users\ICTD\PycharmProjects\PythonProject\processed_images"
-DIR_TEST_IMAGES = r"C:\Users\ICTD\PycharmProjects\PythonProject\test_images"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DIR_DATASET = os.path.join(BASE_DIR, "kaggle_datasets")
+DIR_PROCESSED_IMAGES = os.path.join(BASE_DIR, "processed_images")
+DIR_TEST_IMAGES = os.path.join(BASE_DIR, "test_images")
 
 def load_images(dataset_path):
     images = []
