@@ -6,6 +6,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
+DIR_DATASET= r"C:\Users\ICTD\PycharmProjects\PythonProject\kaggle_datasets"
+DIR_PROCESSED_IMAGES =r"C:\Users\ICTD\PycharmProjects\PythonProject\processed_images"
+DIR_TEST_IMAGES = r"C:\Users\ICTD\PycharmProjects\PythonProject\test_images"
 
 def load_images(dataset_path):
     images = []
@@ -55,7 +58,7 @@ def detect_cracks(image_path):
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(img, f"Length: {length}px", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
 
-    output_path = os.path.join(r"C:\Users\ICTD\PycharmProjects\PythonProject\processed_images",
+    output_path = os.path.join(DIR_PROCESSED_IMAGES,
                                os.path.basename(image_path))
     cv2.imwrite(output_path, img)
     print(f"Image with bounding boxes saved to {output_path}")
@@ -78,21 +81,19 @@ def predict_image(image_path, model):
         return "No crack detected"
 
 
-dataset_path = r"C:\Users\ICTD\PycharmProjects\PythonProject\kaggle_datasets"
-X, y = load_images(dataset_path)
-
+X, y = load_images(DIR_DATASET)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
 model = SVC(kernel="rbf", class_weight="balanced")
 model.fit(X_train, y_train)
-
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Model accuracy: {accuracy * 100:.2f}%")
 
 user_input = input("Choose an option below (1) Test all images or (2) Enter a test image file name: ")
 number = int(user_input)
-test_images_folder = r"C:\Users\ICTD\PycharmProjects\PythonProject\test_images"
+test_images_folder = DIR_TEST_IMAGES
+
+
 if number == 1:
     for filename in os.listdir(test_images_folder):
         if filename.endswith(('.jpg', '.png', '.jpeg')):
