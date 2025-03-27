@@ -12,6 +12,9 @@ DIR_DATASET = os.path.join(BASE_DIR, "kaggle_datasets")
 DIR_PROCESSED_IMAGES = os.path.join(BASE_DIR, "processed_images")
 DIR_TEST_IMAGES = os.path.join(BASE_DIR, "test_images")
 
+for directory in [DIR_DATASET, DIR_PROCESSED_IMAGES, DIR_TEST_IMAGES]:
+    os.makedirs(directory, exist_ok=True)
+
 def load_images(dataset_path):
     images = []
     labels = []
