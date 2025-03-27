@@ -82,18 +82,21 @@ def predict_image(image_path, model):
         return "No crack detected"
 
 
-X, y = load_images(DIR_DATASET)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-model = SVC(kernel="rbf", class_weight="balanced")
-model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Model accuracy: {accuracy * 100:.2f}%")
+def train_model(DIR_DATASET):
+    X, y = load_images(DIR_DATASET)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = SVC(kernel="rbf", class_weight="balanced")
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f"Model accuracy: {accuracy * 100:.2f}%")
+    return model
+
+model = train_model(DIR_DATASET)
 
 user_input = input("Choose an option below (1) Test all images or (2) Enter a test image file name: ")
 number = int(user_input)
 test_images_folder = DIR_TEST_IMAGES
-
 
 if number == 1:
     for filename in os.listdir(test_images_folder):
