@@ -56,7 +56,8 @@ def detect_cracks(image_path):
 
         if length > min_length and aspect_ratio > min_aspect_ratio:
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv2.putText(img, f"Length: {length}px", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+            cv2.putText(img, f"Length: {length}px", (x, y - 5),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
 
     output_path = os.path.join(DIR_PROCESSED_IMAGES,
                                os.path.basename(image_path))
